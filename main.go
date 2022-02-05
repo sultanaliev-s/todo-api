@@ -8,12 +8,12 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/sultanaliev-s/todo-api/models"
+	"github.com/sultanaliev-s/todo-api/task"
 	"github.com/sultanaliev-s/todo-api/user"
 )
 
-func GetTasks() []*models.Task {
-	return []*models.Task{
+func GetTasks() []*task.Task {
+	return []*task.Task{
 		{ID: 1, Description: "Add a database", Author: 1,
 			Deadline: time.Now().String(), IsDone: false},
 		{ID: 2, Description: "Add tests", Author: 1,
