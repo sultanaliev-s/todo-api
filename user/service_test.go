@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestBCreateUser(t *testing.T) {
+func TestCreateUser(t *testing.T) {
 	repository := NewRepo()
 	service := NewService(&repository)
 	userIn := User{
