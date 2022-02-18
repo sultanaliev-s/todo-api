@@ -163,3 +163,27 @@ func TestRegistrationRequest_PasswordMaxLength(t *testing.T) {
 		t.Errorf("valid password (%v) should be accepted %v", req.Username, err)
 	}
 }
+
+func TestLoginRequest_RequiredUsernameAndPassword(t *testing.T) {
+	req := loginRequest{}
+	err := req.Validate()
+	if err == nil {
+		t.Error("username and password should be required")
+	}
+}
+
+func TestLoginRequest_RequiredUsername(t *testing.T) {
+	req := loginRequest{Password: "ValidPassword12345"}
+	err := req.Validate()
+	if err == nil {
+		t.Error("username should be required")
+	}
+}
+
+func TestLoginRequest_RequiredPassword(t *testing.T) {
+	req := loginRequest{Username: "ValidUsername12345"}
+	err := req.Validate()
+	if err == nil {
+		t.Error("password should be required")
+	}
+}

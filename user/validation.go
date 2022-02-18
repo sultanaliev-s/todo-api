@@ -47,3 +47,8 @@ func isSpecialCharacter(c byte) bool {
 	}
 	return false
 }
+
+func (r loginRequest) Validate() error {
+	validate := validator.New()
+	return validate.Struct(r)
+}

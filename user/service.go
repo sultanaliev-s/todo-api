@@ -8,6 +8,7 @@ import (
 
 type Repository interface {
 	Create(user User) (User, error)
+	GetByUsername(username string) (User, error)
 }
 
 type Service struct {
@@ -28,4 +29,19 @@ func (s *Service) CreateUser(user User) (User, error) {
 		return User{}, err
 	}
 	return user, nil
+}
+
+func (s *Service) LoginUser(user User) (User, error) {
+	foundUser, err := s.repo.GetByUsername(user.Username)
+	if err != nil {
+		return User{}, err
+	}
+
+	err = bcrypt.CompareHashAndPassword(
+		[]byte(foundUser.Password), []byte(user.Password))
+	if err != nil {
+		return User{}, err
+	}
+
+	return foundUser, nil
 }
