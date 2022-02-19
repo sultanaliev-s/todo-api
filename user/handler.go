@@ -22,6 +22,7 @@ func RegisterHandlers(e *echo.Echo, s *Service, l *log.Logger) {
 
 	e.POST("/register", handler.createUser)
 	e.POST("/login", handler.loginUser)
+	e.POST("/logout", handler.logoutUser)
 }
 
 func (h *Handler) createUser(ctx echo.Context) error {
@@ -88,5 +89,20 @@ func (*Handler) issueAuthCookie(ctx echo.Context) {
 		HttpOnly: true,
 	}
 	sess.Values["authenticated"] = true
+	sess.Save(ctx.Request(), ctx.Response())
+}
+
+func (h *Handler) logoutUser(ctx echo.Context) error {
+	h.revokeAuthCookie(ctx)
+	return ctx.NoContent(http.StatusOK)
+}
+
+func (*Handler) revokeAuthCookie(ctx echo.Context) {
+	sess, _ := session.Get("session", ctx)
+	sess.Options = &sessions.Options{
+		Path:     "/",
+		HttpOnly: true,
+	}
+	sess.Values["authenticated"] = false
 	sess.Save(ctx.Request(), ctx.Response())
 }
