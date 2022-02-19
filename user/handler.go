@@ -83,7 +83,6 @@ type loginResponse struct {
 func (h *Handler) loginUser(ctx echo.Context) error {
 	request := loginRequest{}
 	response := loginResponse{}
-	sess, _ := session.Get("session", ctx)
 
 	err := ctx.Bind(&request)
 	if err != nil {
@@ -105,13 +104,7 @@ func (h *Handler) loginUser(ctx echo.Context) error {
 		ctx.JSON(http.StatusBadRequest, response)
 	}
 
-	sess.Options = &sessions.Options{
-		Path:     "/",
-		MaxAge:   86400 * 7,
-		HttpOnly: true,
-	}
-	sess.Values["authenticated"] = true
-	sess.Save(ctx.Request(), ctx.Response())
+	h.issueAuthCookie(ctx)
 	return ctx.NoContent(http.StatusOK)
 }
 
@@ -123,4 +116,15 @@ func (r *loginRequest) toUser() (user User) {
 
 func (r *loginResponse) setErrorMessage(e error) {
 	r.ErrorMessage = e.Error()
+}
+
+func (*Handler) issueAuthCookie(ctx echo.Context) {
+	sess, _ := session.Get("session", ctx)
+	sess.Options = &sessions.Options{
+		Path:     "/",
+		MaxAge:   86400 * 7,
+		HttpOnly: true,
+	}
+	sess.Values["authenticated"] = true
+	sess.Save(ctx.Request(), ctx.Response())
 }
