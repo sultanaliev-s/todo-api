@@ -22,6 +22,7 @@ require (
 require (
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
+	github.com/gorilla/sessions v1.2.1
 	github.com/labstack/echo-contrib v0.12.0
 	github.com/leodido/go-urn v1.2.1 // indirect
 )
@@ -29,5 +30,5 @@ require (
 require (
 	github.com/gorilla/context v1.1.1 // indirect
 	github.com/gorilla/securecookie v1.1.1 // indirect
-	github.com/gorilla/sessions v1.2.1 // indirect
+	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 )
